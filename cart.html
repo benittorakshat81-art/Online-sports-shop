@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - Sports Store</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    header { background: #2e3d2f; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: white; text-decoration: none; font-weight: bold; }
+    .cart-page { max-width: 600px; margin: 40px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .cart-item { display: flex; justify-content: space-between; margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Your Cart 🛒</h1>
+  <a href="index.html">⬅ Back to Shop</a>
+</header>
+
+<div class="cart-page">
+  <div id="cart-items"></div>
+  <hr>
+  <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function renderCart() {
+    const cartItems = document.getElementById("cart-items");
+    cartItems.innerHTML = "";
+    let total = 0;
+    cart.forEach((item, index) => {
+      total += item.price;
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <span>${item.name} - ₹${item.price}</span>
+          <button onclick="removeFromCart(${index})">X</button>
+        </div>`;
+    });
+    document.getElementById("cart-total").textContent = total.toLocaleString("en-IN");
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>
